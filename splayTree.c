@@ -139,3 +139,22 @@ void insert_ABB(struct node *root, int num) {
         return;
     }
 }
+
+struct node *delete(struct node* root, int num) {
+    struct node *father = search_ABB_father(root, num);
+    delete_ABB(father, num);
+    return splay(root, father->num);
+}
+
+struct node *search_ABB_father(struct node* root, int num) {
+    if (root->izq == NULL && root->der == NULL) {
+        return;
+    }
+}
+
+void delete_ABB(root, num) {
+}
+
+int main() {
+    
+}
