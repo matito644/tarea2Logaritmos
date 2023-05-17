@@ -6,6 +6,8 @@ struct node {
     struct node *izq, *der;
 };
 
+void insert_ABB(struct node **root, int num);
+
 /* Helper function that allocates a new node with the given key and
  NULL left and right pointers. */
 
@@ -120,41 +122,64 @@ struct node *search(struct node *root, int num) {
 // returns the new root of Splay Tree.  If key is present in tree
 // then, it is moved to root.
 
-struct node *insert(struct node *root, int num) {
+void insert(struct node **root, int num) {
     insert_ABB(root, num);
-    return splay(root, num);
+    //return splay(root, num);
 }
 
-void insert_ABB(struct node *root, int num) {
-    if (root==NULL) {
-        root = createNode(num);
+void insert_ABB(struct node **root, int num) {
+    if (*root==NULL) {
+        *root = createNode(num);
         return;
     }
-    else if (num < root->num) {
-        insert_ABB(root->izq, num);
+    else if (num < (*root)->num) {
+        insert_ABB(&(*root)->izq, num);
         return;
     }
-    else if (num > root->num) {
-        insert_ABB(root->der, num);
+    else if (num > (*root)->num) {
+        insert_ABB(&(*root)->der, num);
         return;
     }
 }
 
-struct node *delete(struct node* root, int num) {
-    struct node *father = search_ABB_father(root, num);
-    delete_ABB(father, num);
-    return splay(root, father->num);
-}
+/*struct node *delete(struct node* root, int num) {
+    //struct node *father = search_ABB_father(root, num);
+    //delete_ABB(father, num);
+    //return splay(root, father->num);
+}*/
 
-struct node *search_ABB_father(struct node* root, int num) {
+/*struct node *search_ABB_father(struct node* root, int num) {
     if (root->izq == NULL && root->der == NULL) {
         return;
     }
-}
+}*/
 
-void delete_ABB(root, num) {
+//void delete_ABB(root, num) {
+//}
+
+void preOrder(struct node *root) {
+    if (root != NULL) {
+        printf("%d ", root->num);
+        preOrder(root->izq);
+        preOrder(root->der);
+    }
 }
 
 int main() {
-    
+    struct node *root = createNode(100);
+    root->izq = createNode(50);
+    root->der = createNode(200);
+    root->izq->izq = createNode(40);
+    root->izq->izq->izq = createNode(30);
+    root->izq->izq->izq->izq = createNode(20);
+    printf("Preorder traversal of the Splay tree is \n");
+    preOrder(root);
+    struct node* arbol= NULL;
+    insert(&arbol, 1);
+    insert(&arbol, 2);
+    insert(&arbol, 3);
+    insert(&arbol, 4);
+    insert(&arbol, 5);
+    insert(&arbol, 6);
+    preOrder(arbol);
 }
