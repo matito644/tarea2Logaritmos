@@ -7,7 +7,6 @@ struct node {
 };
 
 /* Helper function that allocates a new node with the given key and
-
  NULL left and right pointers. */
 
 struct node* createNode(int num) {
@@ -19,7 +18,6 @@ struct node* createNode(int num) {
 }
 
 // A utility function to right rotate subtree rooted with y
-
 // See the diagram given above.
 
 struct node *rightRotate(struct node *x) {
@@ -30,7 +28,6 @@ struct node *rightRotate(struct node *x) {
 }
 
 // A utility function to left rotate subtree rooted with x
-
 // See the diagram given above.
 
 struct node *leftRotate(struct node *x) {
@@ -41,9 +38,7 @@ struct node *leftRotate(struct node *x) {
 }
 
 // This function brings the key at root if key is present in tree.
-
 // If key is not present, then it brings the last accessed item at
-
 // root.  This function modifies the tree and returns the new root
 
 struct node *splay(struct node *root, int num) {
@@ -110,4 +105,37 @@ struct node *splay(struct node *root, int num) {
     }
 
     return root;
+
+}
+
+// The search function for Splay tree.  Note that this function
+// returns the new root of Splay Tree.  If key is present in tree
+// then, it is moved to root.
+
+struct node *search(struct node *root, int num) {
+    return splay(root, num);
+}
+
+// The insert function for Splay tree.  Note that this function
+// returns the new root of Splay Tree.  If key is present in tree
+// then, it is moved to root.
+
+struct node *insert(struct node *root, int num) {
+    insert_ABB(root, num);
+    return splay(root, num);
+}
+
+void insert_ABB(struct node *root, int num) {
+    if (root==NULL) {
+        root = createNode(num);
+        return;
+    }
+    else if (num < root->num) {
+        insert_ABB(root->izq, num);
+        return;
+    }
+    else if (num > root->num) {
+        insert_ABB(root->der, num);
+        return;
+    }
 }
