@@ -6,6 +6,8 @@ struct node {
     struct node *izq, *der;
 };
 
+void insert_ABB(struct node *root, int num);
+
 /* Helper function that allocates a new node with the given key and
  NULL left and right pointers. */
 
@@ -140,21 +142,5 @@ void insert_ABB(struct node *root, int num) {
     }
 }
 
-struct node *delete(struct node* root, int num) {
-    struct node *father = search_ABB_father(root, num);
-    delete_ABB(father, num);
-    return splay(root, father->num);
-}
-
-struct node *search_ABB_father(struct node* root, int num) {
-    if (root->izq == NULL && root->der == NULL) {
-        return;
-    }
-}
-
-void delete_ABB(root, num) {
-}
-
 int main() {
-    
 }
