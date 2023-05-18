@@ -6,7 +6,7 @@ struct node {
     struct node *izq, *der;
 };
 
-void insert_ABB(struct node *root, int num);
+void insert_ABB(struct node **root, int num);
 
 /* Helper function that allocates a new node with the given key and
  NULL left and right pointers. */
@@ -53,15 +53,18 @@ struct node *splay(struct node *root, int num) {
         if (root->izq == NULL)
             return root;
         
-        if (root->izq->num > num) {
+        else if (root->izq->num == num)
+            root = rightRotate(root);
+        
+        else if (root->izq->num > num) {
             // Zig
             if (root->izq->izq == NULL)
                 root = rightRotate(root);
             // Zig Zig
             else {
                 root->izq->izq = splay(root->izq->izq, num);
-                root->izq = rightRotate(root->izq);
                 root = rightRotate(root);
+                root->izq = rightRotate(root->izq);
             }
         }
         
@@ -72,8 +75,8 @@ struct node *splay(struct node *root, int num) {
             // Zag Zig
             else {
                 root->izq->der = splay(root->izq->der, num);
-                root->izq = leftRotate(root->izq);
                 root = rightRotate(root);
+                root->izq = leftRotate(root->izq);
             }
         }
     }
@@ -82,15 +85,18 @@ struct node *splay(struct node *root, int num) {
         if (root->der == NULL)
             return root;
 
-        if (root->der->num < num){
+        else if (root->der->num == num)
+            root = leftRotate(root);
+
+        else if (root->der->num < num){
             //Zag
             if (root->der->der == NULL)
                 root = leftRotate(root);
             else {
                 //Zag Zag
                 root->der->der = splay(root->der->der, num);
-                root->der = leftRotate(root->der);
                 root = leftRotate(root);
+                root->der = leftRotate(root->der);
             }
         }
         else if (root->der->num > num){
@@ -100,8 +106,8 @@ struct node *splay(struct node *root, int num) {
             else{
                 //Zig Zag
                 root->der->izq = splay(root->der->izq, num);
-                root->der = rightRotate(root->der);
                 root = leftRotate(root);
+                root->der = rightRotate(root->der);
             }
         }
     }
@@ -122,25 +128,68 @@ struct node *search(struct node *root, int num) {
 // returns the new root of Splay Tree.  If key is present in tree
 // then, it is moved to root.
 
-struct node *insert(struct node *root, int num) {
+struct node *insert(struct node **root, int num) {
     insert_ABB(root, num);
-    return splay(root, num);
+    return splay(*root, num);
 }
 
-void insert_ABB(struct node *root, int num) {
-    if (root==NULL) {
-        root = createNode(num);
+void insert_ABB(struct node **root, int num) {
+    if (*root==NULL) {
+        *root = createNode(num);
         return;
     }
-    else if (num < root->num) {
-        insert_ABB(root->izq, num);
+    else if (num < (*root)->num) {
+        insert_ABB(&(*root)->izq, num);
         return;
     }
-    else if (num > root->num) {
-        insert_ABB(root->der, num);
+    else if (num > (*root)->num) {
+        insert_ABB(&(*root)->der, num);
         return;
+    }
+}
+
+void preOrder(struct node *root) {
+    if (root != NULL) {
+        printf("%d ", root->num);
+        preOrder(root->izq);
+        preOrder(root->der);
     }
 }
 
 int main() {
+    struct node *root = createNode(100);
+    root->izq = createNode(50);
+    root->der = createNode(200);
+    root->izq->izq = createNode(40);
+    root->izq->izq->izq = createNode(30);
+    root->izq->izq->izq->izq = createNode(20);
+    printf("Preorder traversal of the Splay tree is \n");
+    preOrder(root);
+    printf("\n");
+    
+    struct node* arbol= NULL;
+    arbol = insert(&arbol, 100);
+    printf("Preorder traversal of the Splay tree is \n");
+    preOrder(arbol);
+    printf("\n");
+    arbol = insert(&arbol, 50);
+    printf("Preorder traversal of the Splay tree is \n");
+    preOrder(arbol);
+    printf("\n");
+    arbol = insert(&arbol, 200);
+    printf("Preorder traversal of the Splay tree is \n");
+    preOrder(arbol);
+    printf("\n");
+    arbol = insert(&arbol, 40);
+    printf("Preorder traversal of the Splay tree is \n");
+    preOrder(arbol);
+    printf("\n");
+    arbol = insert(&arbol, 30);
+    printf("Preorder traversal of the Splay tree is \n");
+    preOrder(arbol);
+    printf("\n");
+    arbol = insert(&arbol, 20);
+    printf("Preorder traversal of the Splay tree is \n");
+    preOrder(arbol);
+    printf("\n"); 
 }
