@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#define COUNT 5
 
 struct node {
     int num;
@@ -53,63 +54,39 @@ struct node *splay(struct node *root, int num) {
         if (root->izq == NULL)
             return root;
         
-        else if (root->izq->num == num)
-            root = rightRotate(root);
-        
         else if (root->izq->num > num) {
-            // Zig
-            if (root->izq->izq == NULL)
-                root = rightRotate(root);
-            // Zig Zig
-            else {
-                root->izq->izq = splay(root->izq->izq, num);
-                root = rightRotate(root);
-                root->izq = rightRotate(root->izq);
-            }
+            root->izq->izq = splay(root->izq->izq, num);
+            root = rightRotate(root);    
         }
         
         else if (root->izq->num < num) {
-            // Zig
-            if (root->izq->der == NULL)
-                root = rightRotate(root);
-            // Zag Zig
-            else {
-                root->izq->der = splay(root->izq->der, num);
-                root = rightRotate(root);
+            root->izq->der = splay(root->izq->der, num);
+            if (root->izq->der != NULL)
                 root->izq = leftRotate(root->izq);
-            }
         }
+
+        if (root->izq != NULL)
+            root = rightRotate(root);
+
     }
     else if (root->num < num) {
 
         if (root->der == NULL)
             return root;
 
-        else if (root->der->num == num)
-            root = leftRotate(root);
-
         else if (root->der->num < num){
-            //Zag
-            if (root->der->der == NULL)
-                root = leftRotate(root);
-            else {
-                //Zag Zag
-                root->der->der = splay(root->der->der, num);
-                root = leftRotate(root);
-                root->der = leftRotate(root->der);
-            }
+            root->der->der = splay(root->der->der, num);
+            root = leftRotate(root);
         }
         else if (root->der->num > num){
-            //Zag
-            if(root->der->izq == NULL)
-                root = leftRotate(root);
-            else{
-                //Zig Zag
-                root->der->izq = splay(root->der->izq, num);
-                root = leftRotate(root);
+            root->der->izq = splay(root->der->izq, num);
+            if (root->der->izq != NULL)
                 root->der = rightRotate(root->der);
-            }
         }
+
+        if (root->der != NULL)
+            root = leftRotate(root);
+
     }
 
     return root;
@@ -156,6 +133,35 @@ void preOrder(struct node *root) {
     }
 }
 
+void print2D(struct node *root)
+{
+    // Pass initial space count as 0
+    print2DUtil(root, 0);
+}
+
+void print2DUtil(struct node *root, int space)
+{
+    // Base case
+    if (root == NULL)
+        return;
+ 
+    // Increase distance between levels
+    space += COUNT;
+ 
+    // Process right child first
+    print2DUtil(root->der, space);
+ 
+    // Print current node after space
+    // count
+    printf("\n");
+    for (int i = COUNT; i < space; i++)
+        printf(" ");
+    printf("%d\n", root->num);
+ 
+    // Process left child
+    print2DUtil(root->izq, space);
+}
+
 int main() {
     struct node *root = createNode(100);
     root->izq = createNode(50);
@@ -170,26 +176,26 @@ int main() {
     struct node* arbol= NULL;
     arbol = insert(&arbol, 100);
     printf("Preorder traversal of the Splay tree is \n");
-    preOrder(arbol);
+    print2D(arbol);
     printf("\n");
     arbol = insert(&arbol, 50);
     printf("Preorder traversal of the Splay tree is \n");
-    preOrder(arbol);
+    print2D(arbol);
     printf("\n");
     arbol = insert(&arbol, 200);
     printf("Preorder traversal of the Splay tree is \n");
-    preOrder(arbol);
+    print2D(arbol);
     printf("\n");
     arbol = insert(&arbol, 40);
     printf("Preorder traversal of the Splay tree is \n");
-    preOrder(arbol);
+    print2D(arbol);
     printf("\n");
     arbol = insert(&arbol, 30);
     printf("Preorder traversal of the Splay tree is \n");
-    preOrder(arbol);
+    print2D(arbol);
     printf("\n");
     arbol = insert(&arbol, 20);
     printf("Preorder traversal of the Splay tree is \n");
-    preOrder(arbol);
+    print2D(arbol);
     printf("\n"); 
 }
