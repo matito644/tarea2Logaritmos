@@ -1,24 +1,24 @@
 #pragma once
 
-typedef struct node {
+typedef struct rbnode {
     int val;
     bool color;
-    struct node *left, *right, *parent;
-} treeNode;
+    struct rbnode *left, *right, *parent;
+} rbNode;
 
 class RedBlackTree {
 public:
-  treeNode *root;
+  rbNode *root;
 
   RedBlackTree();
-  treeNode *getRoot();
-  void insert(treeNode *node);
-  void leftRotate(treeNode *p);
-  void rightRotate(treeNode *p);
+  rbNode *getRoot();
+  void insert(rbNode *node);
+  void leftRotate(rbNode *p);
+  void rightRotate(rbNode *p);
 };
 
-void printCute(treeNode *root, string sep);
-treeNode *createNode(int val);
-treeNode *search(treeNode *root, int val);
+void printCute(rbNode *root, string sep);
+rbNode *createRedBlackTreeNode(int val);
+rbNode *search(rbNode *root, int val);
 
-void megaFree(treeNode *root);
+void megaFree(rbNode *root);

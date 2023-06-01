@@ -9,13 +9,13 @@ RedBlackTree::RedBlackTree() {
   this->root = nullptr;
 }
 
-treeNode *RedBlackTree::getRoot() {
+rbNode *RedBlackTree::getRoot() {
   return this->root;
 }
 
-void RedBlackTree::insert(treeNode *node) {
-  treeNode *aux = nullptr;
-  treeNode *where = this->root;
+void RedBlackTree::insert(rbNode *node) {
+  rbNode *aux = nullptr;
+  rbNode *where = this->root;
   // ir buscando en donde tiene que ir
   while (where != nullptr) {
     aux = where;
@@ -41,7 +41,7 @@ void RedBlackTree::insert(treeNode *node) {
     }
   }
 
-  treeNode *aux2;
+  rbNode *aux2;
   // si el arbol solo tiene una raiz se retorno antes
   // si el arbol solo tiene una raiz y un hijo a cada lado no se entra al while
   // como el nodo se parte insertando como si fuera rojo, para mantener que un padre rojo
@@ -142,8 +142,8 @@ void RedBlackTree::insert(treeNode *node) {
 }
 
 // pRight va a quedar en la posicion de p
-void RedBlackTree::leftRotate(treeNode *p) {
-  treeNode *pRight = p->right;
+void RedBlackTree::leftRotate(rbNode *p) {
+  rbNode *pRight = p->right;
   // solo si pRight no era una hoja
   if (pRight != nullptr) {
     p->right = pRight->left;
@@ -174,8 +174,8 @@ void RedBlackTree::leftRotate(treeNode *p) {
 }
 
 // pLeft va a quedar en la posicion de p
-void RedBlackTree::rightRotate(treeNode *p) {
-  treeNode *pLeft = p->left;
+void RedBlackTree::rightRotate(rbNode *p) {
+  rbNode *pLeft = p->left;
   // solo si pLeft no era una hoja
   if (pLeft != nullptr) {
     p->left = pLeft->right;
@@ -205,7 +205,7 @@ void RedBlackTree::rightRotate(treeNode *p) {
   }
 }
 
-void printCute(treeNode *root, string sep) {
+void printCute(rbNode *root, string sep) {
   if (root != nullptr) {
     cout << sep;
     if (root->color) cout << "nodo: " << root->val << "(rojo)" << endl;
@@ -216,32 +216,36 @@ void printCute(treeNode *root, string sep) {
   }
 }
 
-treeNode *createNode(int val) {
-  treeNode *newNode = (treeNode *)malloc(sizeof(treeNode));
+rbNode *createRedBlackTreeNode(int val) {
+  rbNode *newNode = (rbNode *)malloc(sizeof(rbNode));
   newNode->val = val;
   newNode->color = 1;
   newNode->left = newNode->right = newNode->parent = nullptr;
   return newNode;
 }
 
-treeNode *search(treeNode *root, int val) {
+rbNode *search(rbNode *root, int val) {
+  // mientras no llegue a una hoja
   while (root != nullptr) {
+    // si era el que estoy buscando, lo retorno
     if (root->val == val) {
       return root;
     }
+    // si busco uno menor, lo busco en el subarbol izquierdo
     if (root->val > val) {
       root = root->left;
-    } else {
+    } else { // si no, en el derecho
       root = root->right;
     }
   }
+  // si no estaba, retorno nullptr
   return nullptr;
 }
 
-void megaFree(treeNode *root) {
+void megaFree(rbNode *root) {
   if (root != nullptr) {
-    treeNode *left = root->left;
-    treeNode *right = root->right;
+    rbNode *left = root->left;
+    rbNode *right = root->right;
     free(root);
     megaFree(left);
     megaFree(right);
