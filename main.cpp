@@ -62,8 +62,29 @@ void createMegaTree(SplayTree *tree, int *array, int n) {
     sNode *node = createSplayTreeNode(array[i]);
     (*tree).insert(node);
   }
-
 } 
+
+int f(int i, double alpha){
+  return int(std::pow(i, alpha));
+}
+
+
+int *skew (int n, double alpha, int M){
+  int *array = createArray(n);
+  shuffleArray(array, n);
+  //permuta aleatoria
+  int *C = (int *)malloc(n);
+  int SUM = 0;
+  for (int k = 0; k<n; k++){
+    C[k]=f(k, alpha);
+    SUM += C[k];
+  }
+  for(int k = 0; k<n; k++){
+    C[k] = C[k]/SUM * M;
+  }
+  shuffleArray(C, n);
+  return C;
+}
 
 int main() {
 
