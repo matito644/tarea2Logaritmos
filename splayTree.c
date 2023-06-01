@@ -162,7 +162,7 @@ void print2DUtil(struct node *root, int space)
     print2DUtil(root->izq, space);
 }
 
-int main() {
+/* int main() {
     struct node *root = createNode(100);
     root->izq = createNode(50);
     root->der = createNode(200);
@@ -198,4 +198,4 @@ int main() {
     printf("Preorder traversal of the Splay tree is \n");
     print2D(arbol);
     printf("\n"); 
-}
+} */

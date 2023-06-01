@@ -197,18 +197,18 @@ void megaFree(sNode *root) {
   }
 }
 
-// int main() {
-// 	SplayTree tree;
-//   sNode *node1 = createSplayTreeNode(100);
-//   sNode *node2 = createSplayTreeNode(50);
-//   sNode *node3 = createSplayTreeNode(200);
-//   sNode *node4 = createSplayTreeNode(40);
-//   tree.insert(node1);
-//   tree.insert(node2);
-//   tree.insert(node3);
-//   tree.insert(node4);
-// 	printCuteSplay(tree.getRoot(), "", 1);
-//   tree.search(tree.getRoot(), 50);
-//   printCuteSplay(tree.getRoot(), "", 1);
-// 	return 0;
-// }
+/* int main() {
+  SplayTree tree;
+  sNode *node1 = createSplayTreeNode(100);
+  sNode *node2 = createSplayTreeNode(50);
+  sNode *node3 = createSplayTreeNode(200);
+  sNode *node4 = createSplayTreeNode(40);
+  tree.insert(node1);
+  tree.insert(node2);
+  tree.insert(node3);
+  tree.insert(node4);
+  printCuteSplay(tree.getRoot(), "", 1);
+  tree.search(tree.getRoot(), 50);
+  printCuteSplay(tree.getRoot(), "", 1);
+  return 0;
+} */

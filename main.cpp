@@ -2,8 +2,10 @@
 #include <cstdlib>
 #include <iostream>
 #include <random>
+#include <algorithm>
 using namespace std;
-
+#define LOWER_BND 3
+#define UPPER_BND 5
 #include "redBlackTree.h"
 #include "splayTree.h"
 
@@ -55,10 +57,18 @@ void shuffleArray(int *array, int size) {
   // cout << '\n';
 }
 
+void createMegaTree(SplayTree *tree, int *array, int n) {
+  for (int i = 0; i<n; i++) {
+    sNode *node = createSplayTreeNode(array[i]);
+    (*tree).insert(node);
+  }
+
+} 
+
 int main() {
 
   int twoPower = 1<<28;
-  for (int k=16; k<=24; k++) {
+  for (int k=LOWER_BND; k<=UPPER_BND; k++) {
     int twoK = 1<<k;
     printf("Se va a crear un arreglo de %d\n", twoK);
     int *array = createArray(twoK);
@@ -68,8 +78,12 @@ int main() {
     int *bigArray = createBigArray(array, 28-k, twoK, twoPower);
     printf("Desordenar el arreglo haciendo shuffle, se demora bastante\n");
     shuffleArray(bigArray, twoPower);
+    SplayTree tree;
+    createMegaTree(&tree, array, twoK);
+    printCuteSplay(tree.getRoot(), "", 1);
     free(array);
     free(bigArray);
   }
   return 0;
+
 }
