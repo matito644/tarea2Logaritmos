@@ -205,14 +205,20 @@ void RedBlackTree::rightRotate(rbNode *p) {
   }
 }
 
-void printCute(rbNode *root, string sep) {
+void printCute(rbNode *root, string sep, bool wasItRight) {
   if (root != nullptr) {
     cout << sep;
+    if (wasItRight) {
+      cout << "R-> ";
+    } else {
+      cout << "L-> ";
+    }
     if (root->color) cout << "nodo: " << root->val << "(rojo)" << endl;
     else cout << "nodo: " << root->val << "(negro)" << endl;
     sep += "    ";
-    printCute(root->left, sep);
-    printCute(root->right, sep);
+    // cout << "nodo: " << root->val << endl;
+    printCute(root->left, sep, 0);
+    printCute(root->right, sep, 1);
   }
 }
 

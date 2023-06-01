@@ -68,8 +68,51 @@ int main() {
     int *bigArray = createBigArray(array, 28-k, twoK, twoPower);
     printf("Desordenar el arreglo haciendo shuffle, se demora bastante\n");
     shuffleArray(bigArray, twoPower);
+
+    // crear los arboles y e insertar los elementos
+    printf("Se crean los árboles y se insertan los elementos\n");
+    RedBlackTree rbTree;
+    SplayTree sTree;
+    for (int i=0; i<twoK; i++) {
+      rbNode *rbNode = createRedBlackTreeNode(array[i]);
+      sNode *sNode = createSplayTreeNode(array[i]);
+      rbTree.insert(rbNode);
+      sTree.insert(sNode);
+    }
+    printf("Listo!\nAhora se harán las búsquedas");
+    // BUSQUEDAS
+
+
+    // free a todo
+    megaFree(rbTree.getRoot());
+    megaFree(sTree.getRoot());
     free(array);
     free(bigArray);
   }
+
+  // ejemplo de juguete
+  // int *array = createArray(8);
+  // int *bigArray = createBigArray(array, 1, 8, 16);
+  // shuffleArray(array, 8);
+  // shuffleArray(bigArray, 16);
+  // printArray(array, 8);
+  // printArray(bigArray, 16);
+  //
+  // RedBlackTree rbTree;
+  // SplayTree sTree;
+  // for (int i=0; i<8; i++) {
+  //   rbNode *rbNode = createRedBlackTreeNode(array[i]);
+  //   sNode *sNode = createSplayTreeNode(array[i]);
+  //   rbTree.insert(rbNode);
+  //   sTree.insert(sNode);
+  // }
+  //
+  // printCute(rbTree.getRoot(), "", 1);
+  // printCuteSplay(sTree.getRoot(), "", 1);
+  //
+  // megaFree(rbTree.getRoot());
+  // megaFree(sTree.getRoot());
+  // free(array);
+  // free(bigArray);
   return 0;
 }

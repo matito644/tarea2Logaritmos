@@ -17,7 +17,7 @@ public:
   void rightRotate(rbNode *p);
 };
 
-void printCute(rbNode *root, string sep);
+void printCute(rbNode *root, string sep, bool wasItRight);
 rbNode *createRedBlackTreeNode(int val);
 rbNode *search(rbNode *root, int val);
 
