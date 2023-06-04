@@ -4,7 +4,7 @@
 ### Compilar
 Para compilar los códigos basta ejecutar:
 ```
-g++ redBlackTree.cpp splayTree.cpp main.cpp -o run
+g++ -O3 redBlackTree.cpp splayTree.cpp main.cpp -o run
 ```
 Y luego:
 
