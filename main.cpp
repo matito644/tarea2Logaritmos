@@ -183,6 +183,8 @@ int main() {
                 << getVariance(arrayForMeanRedBlack) << ","
                 << sqrt(getVariance(arrayForMeanRedBlack)) << "\n";
     // free a todo
+    eqFileSplay.flush();
+    eqFileRDT.flush();
     megaFree(rbTree.getRoot());
     megaFree(sTree.getRoot());
     free(array);
@@ -251,6 +253,8 @@ int main() {
     free(skew1);
     printf("Se reinicia solo el splay tree, pues el red black tree no cambia con las búsquedas\n");
     // reiniciar el splay tree
+    skewFileSplay.flush();
+    skewFileRDT.flush();
     megaFree(sTree.getRoot());
     SplayTree sTree2;
     for (int i=0; i<twoK; i++) {
@@ -294,6 +298,8 @@ int main() {
     skewFileRDT<<k<<","<<1<<","<<getMean(arrayForMeanRedBlack)<<","<<getVariance(arrayForMeanRedBlack)<<","<<sqrt(getVariance(arrayForMeanRedBlack))<<"\n";
     free(skew2);
     printf("Se reinicia solo el splay tree, pues el red black tree no cambia con las búsquedas\n");
+    skewFileSplay.flush();
+    skewFileRDT.flush();
     // reiniciar el splay tree
     megaFree(sTree2.getRoot());
     SplayTree sTree3;
@@ -336,6 +342,8 @@ int main() {
     cout << "RedBlack, promedio: " << getMean(arrayForMeanRedBlack) << " || varianza: " << getVariance(arrayForMeanRedBlack) << " || desviación estándar: " << sqrt(getVariance(arrayForMeanRedBlack)) << endl;
     skewFileSplay<<k<<","<<1.5<<","<<getMean(arrayForMeanSplay)<<","<<getVariance(arrayForMeanSplay)<<","<< sqrt(getVariance(arrayForMeanSplay))<<"\n";
     skewFileRDT<<k<<","<<1.5<<","<<getMean(arrayForMeanRedBlack)<<","<<getVariance(arrayForMeanRedBlack)<<","<<sqrt(getVariance(arrayForMeanRedBlack))<<"\n";
+    skewFileSplay.flush();
+    skewFileRDT.flush();
     free(skew3);
     printf("Listo!\n\n");
     megaFree(sTree3.getRoot());
