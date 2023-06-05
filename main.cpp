@@ -4,6 +4,7 @@
 #include <random>
 #include <algorithm>
 #include <ctime>
+#include <fstream>
 using namespace std;
 
 #include "redBlackTree.h"
@@ -107,8 +108,17 @@ float getVariance(float array[]) {
 
 // funcion main
 int main() {
-  int twoPower = 1<<25;
-  for (int k=16; k<=16; k++) {
+  ofstream eqFileSplay("eq_fileSplay.csv");
+  ofstream eqFileRDT("eq_fileRDT.csv");
+  ofstream skewFileSplay("skew_fileSplay.csv");
+  ofstream skewFileRDT("skew_fileRDT.csv");
+  eqFileSplay<<"k,prom,var,std\n";
+  eqFileRDT<<"k,prom,var,std\n";
+  skewFileSplay << "k,alpha,prom,var,std\n";
+  skewFileRDT<<"k,alpha,prom,var,std\n";
+  int powerr = 26;
+  int twoPower = 1<<powerr;
+  for (int k=16; k<25; k++) {
     int twoK = 1<<k;
     printf("Se va a crear un arreglo de %d\n", twoK);
     int *array = createArray(twoK);
@@ -131,7 +141,7 @@ int main() {
     for (int test=0; test<3; test++) {
       printf("Test %d\n", test+1);
       printf("Se va a crear el bigArray\n");
-      int *bigArray = createBigArray(array, 25-k, twoK, twoPower);
+      int *bigArray = createBigArray(array, powerr-k, twoK, twoPower);
       printf("Desordenar el arreglo haciendo shuffle, se demora bastante\n");
       shuffleArray(bigArray, twoPower);
       printf("Listo!\nAhora se harán las búsquedas\n");
@@ -166,14 +176,22 @@ int main() {
     // mostrar el promedio, la varianza y la desviacion estandar
     cout << "Splay, promedio: " << getMean(arrayForMeanSplay) << " || varianza: " << getVariance(arrayForMeanSplay) << " || desviación estándar: " << sqrt(getVariance(arrayForMeanSplay)) << endl;
     cout << "RedBlack, promedio: " << getMean(arrayForMeanRedBlack) << " || varianza: " << getVariance(arrayForMeanRedBlack) << " || desviación estándar: " << sqrt(getVariance(arrayForMeanRedBlack)) << endl;
+    eqFileSplay << k << "," << getMean(arrayForMeanSplay) << "," 
+                << getVariance(arrayForMeanSplay) << ","
+                << sqrt(getVariance(arrayForMeanSplay)) << "\n";
+    eqFileRDT << k << "," << getMean(arrayForMeanRedBlack) << "," 
+                << getVariance(arrayForMeanRedBlack) << ","
+                << sqrt(getVariance(arrayForMeanRedBlack)) << "\n";
     // free a todo
     megaFree(rbTree.getRoot());
     megaFree(sTree.getRoot());
     free(array);
   }
+  eqFileSplay.close();
+  eqFileRDT.close();
 
   printf("Terminaron los test sin skew\n\nAhora vienen las búsquedas con skew\n");
-  for (int k=16; k<=16; k++) {
+  for (int k=16; k<25; k++) {
     // SKEW
     int twoK = 1<<k;
     printf("Vamos con la búsqueda con skew\n");
@@ -211,6 +229,7 @@ int main() {
       // guardar el tiempo
       arrayForMeanRedBlack[test] = (float)timetime/CLOCKS_PER_SEC;
   	  cout << "La búsqueda en el red black tree tomó " << (float)timetime/CLOCKS_PER_SEC << " segundos" << endl;
+      
       // búsqueda en el splay tree
       timetime = clock();
       for (int i=0; i<newSize; i++) {
@@ -227,6 +246,8 @@ int main() {
     // mostrar el promedio, la varianza y la desviacion estandar
     cout << "Splay, promedio: " << getMean(arrayForMeanSplay) << " || varianza: " << getVariance(arrayForMeanSplay) << " || desviación estándar: " << sqrt(getVariance(arrayForMeanSplay)) << endl;
     cout << "RedBlack, promedio: " << getMean(arrayForMeanRedBlack) << " || varianza: " << getVariance(arrayForMeanRedBlack) << " || desviación estándar: " << sqrt(getVariance(arrayForMeanRedBlack)) << endl;
+    skewFileSplay<<k<<","<<0.5<<","<<getMean(arrayForMeanSplay)<<","<<getVariance(arrayForMeanSplay)<<","<< sqrt(getVariance(arrayForMeanSplay))<<"\n";
+    skewFileRDT<<k<<","<<0.5<<","<<getMean(arrayForMeanRedBlack)<<","<<getVariance(arrayForMeanRedBlack)<<","<<sqrt(getVariance(arrayForMeanRedBlack))<<"\n";
     free(skew1);
     printf("\nAhora el con alfa igual 1\n");
     int *skew2 = skew(arrayForSkew, twoK, 1, twoPower);
@@ -261,7 +282,11 @@ int main() {
     // mostrar el promedio, la varianza y la desviacion estandar
     cout << "Splay, promedio: " << getMean(arrayForMeanSplay) << " || varianza: " << getVariance(arrayForMeanSplay) << " || desviación estándar: " << sqrt(getVariance(arrayForMeanSplay)) << endl;
     cout << "RedBlack, promedio: " << getMean(arrayForMeanRedBlack) << " || varianza: " << getVariance(arrayForMeanRedBlack) << " || desviación estándar: " << sqrt(getVariance(arrayForMeanRedBlack)) << endl;
+    skewFileSplay<<k<<","<<1<<","<<getMean(arrayForMeanSplay)<<","<<getVariance(arrayForMeanSplay)<<","<< sqrt(getVariance(arrayForMeanSplay))<<"\n";
+    skewFileRDT<<k<<","<<1<<","<<getMean(arrayForMeanRedBlack)<<","<<getVariance(arrayForMeanRedBlack)<<","<<sqrt(getVariance(arrayForMeanRedBlack))<<"\n";
     free(skew2);
+    
+    
     printf("\nFinalmente el con alfa igual 1.5\n");
     int *skew3 = skew(arrayForSkew, twoK, 1.5, twoPower);
     for (int test=0; test<3; test++) {
@@ -295,6 +320,8 @@ int main() {
     // mostrar el promedio, la varianza y la desviacion estandar
     cout << "Splay, promedio: " << getMean(arrayForMeanSplay) << " || varianza: " << getVariance(arrayForMeanSplay) << " || desviación estándar: " << sqrt(getVariance(arrayForMeanSplay)) << endl;
     cout << "RedBlack, promedio: " << getMean(arrayForMeanRedBlack) << " || varianza: " << getVariance(arrayForMeanRedBlack) << " || desviación estándar: " << sqrt(getVariance(arrayForMeanRedBlack)) << endl;
+    skewFileSplay<<k<<","<<1.5<<","<<getMean(arrayForMeanSplay)<<","<<getVariance(arrayForMeanSplay)<<","<< sqrt(getVariance(arrayForMeanSplay))<<"\n";
+    skewFileRDT<<k<<","<<1.5<<","<<getMean(arrayForMeanRedBlack)<<","<<getVariance(arrayForMeanRedBlack)<<","<<sqrt(getVariance(arrayForMeanRedBlack))<<"\n";
     free(skew3);
     printf("Listo!\n\n");
     free(arrayForSkew);
