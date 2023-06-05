@@ -118,7 +118,7 @@ int main() {
   skewFileRDT<<"k,alpha,prom,var,std\n";
   int powerr = 26;
   int twoPower = 1<<powerr;
-  for (int k=16; k<25; k++) {
+  for (int k=16; k<21; k++) {
     int twoK = 1<<k;
     printf("Se va a crear un arreglo de %d\n", twoK);
     int *array = createArray(twoK);
