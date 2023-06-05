@@ -107,12 +107,12 @@ float getVariance(float array[]) {
 
 // funcion main
 int main() {
-  int twoPower = 1<<25;
-  for (int k=16; k<=16; k++) {
+  int twoPower = 1<<26;
+  for (int k=16; k<=24; k++) {
     int twoK = 1<<k;
-    printf("Se va a crear un arreglo de %d\n", twoK);
+    printf("Se va a crear un arreglo de tamaño %d\n", twoK);
     int *array = createArray(twoK);
-    printf("Desordenar el arreglo haciendo shuffle.\n");
+    printf("Desordenar el arreglo haciendo shuffle\n");
     shuffleArray(array, twoK);
     // crear los arboles y e insertar los elementos
     printf("Se crean los árboles y se insertan los elementos\n");
@@ -131,7 +131,7 @@ int main() {
     for (int test=0; test<3; test++) {
       printf("Test %d\n", test+1);
       printf("Se va a crear el bigArray\n");
-      int *bigArray = createBigArray(array, 25-k, twoK, twoPower);
+      int *bigArray = createBigArray(array, 26-k, twoK, twoPower);
       printf("Desordenar el arreglo haciendo shuffle, se demora bastante\n");
       shuffleArray(bigArray, twoPower);
       printf("Listo!\nAhora se harán las búsquedas\n");
@@ -173,11 +173,11 @@ int main() {
   }
 
   printf("Terminaron los test sin skew\n\nAhora vienen las búsquedas con skew\n");
-  for (int k=16; k<=16; k++) {
+  for (int k=16; k<=24; k++) {
     // SKEW
     int twoK = 1<<k;
     printf("Vamos con la búsqueda con skew\n");
-    printf("Se crea una permutación para luego formar los 3 arreglos con skew\n");
+    printf("Se crea una permutación de tamaño %d para luego formar los 3 arreglos con skew\n", twoK);
     int *arrayForSkew = createArray(twoK);
     printf("Desordenar dicho arreglo\n");
     shuffleArray(arrayForSkew, twoK);
@@ -228,6 +228,14 @@ int main() {
     cout << "Splay, promedio: " << getMean(arrayForMeanSplay) << " || varianza: " << getVariance(arrayForMeanSplay) << " || desviación estándar: " << sqrt(getVariance(arrayForMeanSplay)) << endl;
     cout << "RedBlack, promedio: " << getMean(arrayForMeanRedBlack) << " || varianza: " << getVariance(arrayForMeanRedBlack) << " || desviación estándar: " << sqrt(getVariance(arrayForMeanRedBlack)) << endl;
     free(skew1);
+    printf("Se reinicia solo el splay tree, pues el red black tree no cambia con las búsquedas\n");
+    // reiniciar el splay tree
+    megaFree(sTree.getRoot());
+    SplayTree sTree2;
+    for (int i=0; i<twoK; i++) {
+      sNode *sNode = createSplayTreeNode(arrayForSkew[i]);
+      sTree2.insert(sNode);
+    }
     printf("\nAhora el con alfa igual 1\n");
     int *skew2 = skew(arrayForSkew, twoK, 1, twoPower);
     for (int test=0; test<3; test++) {
@@ -248,7 +256,7 @@ int main() {
       // búsqueda en el splay tree
       timetime = clock();
       for (int i=0; i<newSize; i++) {
-        sTree.search(sTree.getRoot(), skew2[i]);
+        sTree2.search(sTree2.getRoot(), skew2[i]);
       }
       // obtener el tiempo
       timetime = clock() - timetime;
@@ -262,6 +270,14 @@ int main() {
     cout << "Splay, promedio: " << getMean(arrayForMeanSplay) << " || varianza: " << getVariance(arrayForMeanSplay) << " || desviación estándar: " << sqrt(getVariance(arrayForMeanSplay)) << endl;
     cout << "RedBlack, promedio: " << getMean(arrayForMeanRedBlack) << " || varianza: " << getVariance(arrayForMeanRedBlack) << " || desviación estándar: " << sqrt(getVariance(arrayForMeanRedBlack)) << endl;
     free(skew2);
+    printf("Se reinicia solo el splay tree, pues el red black tree no cambia con las búsquedas\n");
+    // reiniciar el splay tree
+    megaFree(sTree2.getRoot());
+    SplayTree sTree3;
+    for (int i=0; i<twoK; i++) {
+      sNode *sNode = createSplayTreeNode(arrayForSkew[i]);
+      sTree3.insert(sNode);
+    }
     printf("\nFinalmente el con alfa igual 1.5\n");
     int *skew3 = skew(arrayForSkew, twoK, 1.5, twoPower);
     for (int test=0; test<3; test++) {
@@ -282,7 +298,7 @@ int main() {
       // búsqueda en el splay tree
       timetime = clock();
       for (int i=0; i<newSize; i++) {
-        sTree.search(sTree.getRoot(), skew3[i]);
+        sTree3.search(sTree3.getRoot(), skew3[i]);
       }
       // obtener el tiempo
       timetime = clock() - timetime;
@@ -297,6 +313,8 @@ int main() {
     cout << "RedBlack, promedio: " << getMean(arrayForMeanRedBlack) << " || varianza: " << getVariance(arrayForMeanRedBlack) << " || desviación estándar: " << sqrt(getVariance(arrayForMeanRedBlack)) << endl;
     free(skew3);
     printf("Listo!\n\n");
+    megaFree(sTree3.getRoot());
+    megaFree(rbTree.getRoot());
     free(arrayForSkew);
   }
   return 0;
